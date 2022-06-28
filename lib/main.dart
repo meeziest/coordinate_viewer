@@ -186,14 +186,16 @@ class _MyHomePageState extends State<MyHomePage> {
     Uint8List? byteArray = await _imageKey.currentState?.exportImage();
     String? savePathDirectory = await _getWindowsDownloadsDirectory();
     if (savePathDirectory != null && byteArray != null && _fileImage != null) {
+      String baseName = path.basename(_fileImage!.path);
       String name = path.basenameWithoutExtension(_fileImage!.path);
-      String ext = path.extension(_fileImage!.path);
+      String ext = baseName.split('.').last;
       String fileName = await _getNumericalFileName(name, ext, savePathDirectory);
       await FileSaver.instance.saveFile(
         fileName,
         byteArray,
         ext,
       );
+      showDialog(context: context, builder: (_) => const Center(child: Text('Saved')));
     }
   }
 
